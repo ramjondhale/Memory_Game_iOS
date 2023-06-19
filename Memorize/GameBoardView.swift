@@ -17,10 +17,7 @@ struct GameBoardView: View {
    @ObservedObject var viewModel: EmojiMemoryGame
 
     var body: some View {
-        VStack {
-            Text("Memorize 🧠")
-                .font(.largeTitle)
-                .foregroundColor(.cyan)
+        VStack{
             ScrollView {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 80))]) {
                     ForEach(viewModel.cards) { card in
@@ -28,18 +25,30 @@ struct GameBoardView: View {
                             .aspectRatio(2/3, contentMode: .fill)
                             .onTapGesture {
                                 viewModel.chooseCard(card)
-                            }
+                            } .foregroundColor(viewModel.theme.color)
                     }
                 }
-                .foregroundColor(.mint)
             }
-        }
-        .padding(.horizontal)
-    }
 
+            Spacer()
+
+            Button {
+                viewModel.startNewGame()
+            } label: {
+                Label("Start New Game", systemImage: "restart.circle")
+                    .font(.system(size: 30))
+                    .foregroundColor(.cyan)
+            }
+
+            Spacer()
+
+        }.padding(.horizontal)
+
+    }
 }
 
 struct CardView: View {
+
     let card: MemoryGame<String>.Card
 
     var body: some View {
