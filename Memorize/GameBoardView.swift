@@ -18,6 +18,10 @@ struct GameBoardView: View {
 
     var body: some View {
         VStack{
+            Text(viewModel.theme.name)
+                .font(.largeTitle)
+                .foregroundColor(viewModel.theme.color)
+                .colorInvert()
             ScrollView {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 80))]) {
                     ForEach(viewModel.cards) { card in
@@ -38,12 +42,22 @@ struct GameBoardView: View {
                 Label("Start New Game", systemImage: "restart.circle")
                     .font(.system(size: 30))
                     .foregroundColor(.cyan)
+                    .labelStyle(NewLabelStyle())
             }
 
             Spacer()
 
         }.padding(.horizontal)
 
+    }
+}
+
+struct NewLabelStyle: LabelStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        HStack {
+            configuration.title
+            configuration.icon
+        }
     }
 }
 
