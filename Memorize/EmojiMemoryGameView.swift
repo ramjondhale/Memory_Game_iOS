@@ -1,5 +1,5 @@
 //
-//  GameBoardView.swift
+//  EmojiMemoryGameView.swift
 //  Memorize
 //
 //  Created by Ram Jondhale on 17/05/23.
@@ -7,29 +7,24 @@
 
 import SwiftUI
 
-let animals = ["🐶", "🐭", "🐹", "🦊", "🐻", "🐼", "🐯", "🐷", "🐮", "🐱", "🐸", "🐵", "🙈", "🙊", "🙉", "🐔", "🦅", "🐺", "🦄", "🐞"]
-let birds = ["🐓", "🦅", "🦜", "🕊️", "🦤", "🦢", "🦆", "🪿", "🦩", "🦚", "🦃", "🐧", "🐥", "🐣", "🐔", "🦇", "🐦‍⬛", "🐦"]
-let cars = ["🚙", "🚗", "🛻", "🚐", "🚚", "🚓", "🚔", "🚘", "🚖", "🚛", "🏎️", "🚒", "🚑", "🚎", "🚍", "🏍️", "🛵"]
+struct EmojiMemoryGameView: View {
 
-
-struct GameBoardView: View {
-
-   @ObservedObject var viewModel: EmojiMemoryGame
+   @ObservedObject var game: EmojiMemoryGame
 
     var body: some View {
         VStack{
-            Text(viewModel.theme.name)
+            Text(game.theme.name)
                 .font(.largeTitle)
-                .foregroundColor(viewModel.theme.color)
+                .foregroundColor(game.theme.color)
                 .colorInvert()
             ScrollView {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 80))]) {
-                    ForEach(viewModel.cards) { card in
+                    ForEach(game.cards) { card in
                         CardView(card: card)
                             .aspectRatio(2/3, contentMode: .fill)
                             .onTapGesture {
-                                viewModel.chooseCard(card)
-                            } .foregroundColor(viewModel.theme.color)
+                                game.chooseCard(card)
+                            } .foregroundColor(game.theme.color)
                     }
                 }
             }
@@ -37,12 +32,12 @@ struct GameBoardView: View {
             Spacer()
 
             Button {
-                viewModel.startNewGame()
+                game.startNewGame()
             } label: {
                 Label("Start New Game", systemImage: "restart.circle")
                     .font(.system(size: 30))
                     .foregroundColor(.cyan)
-                    .labelStyle(NewLabelStyle())
+                    .labelStyle(StartGameButtonStyle())
             }
 
             Spacer()
@@ -52,7 +47,7 @@ struct GameBoardView: View {
     }
 }
 
-struct NewLabelStyle: LabelStyle {
+struct StartGameButtonStyle: LabelStyle {
     func makeBody(configuration: Configuration) -> some View {
         HStack {
             configuration.title
@@ -63,7 +58,7 @@ struct NewLabelStyle: LabelStyle {
 
 struct CardView: View {
 
-    let card: MemoryGame<String>.Card
+    let card: EmojiMemoryGame.Card
 
     var body: some View {
         ZStack {
@@ -84,6 +79,6 @@ struct CardView: View {
 struct GameBoardView_Previews: PreviewProvider {
 
     static var previews: some View {
-        GameBoardView(viewModel: EmojiMemoryGame())
+        EmojiMemoryGameView(game: EmojiMemoryGame())
     }
 }

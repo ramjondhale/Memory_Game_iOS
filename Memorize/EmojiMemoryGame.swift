@@ -9,12 +9,16 @@ import SwiftUI
 
 class EmojiMemoryGame: ObservableObject {
 
+    // MARK: - Typealiase
+
+    typealias Card = MemoryGame<String>.Card
+
     // MARK: - Constants
 
-    static let animals = ["🐶", "🐭", "🐹", "🦊", "🐻", "🐼", "🐯", "🐷", "🐮", "🐱", "🐸", "🐵", "🙈", "🙊", "🙉", "🐔", "🦅", "🐺", "🦄", "🐞"]
-    static let birds = ["🐓", "🦅", "🦜", "🕊️", "🦤", "🦢", "🦆", "🪿", "🦩", "🦚", "🦃", "🐧", "🐥", "🐣", "🐔", "🦇", "🐦‍⬛", "🐦"]
-    static let cars = ["🚙", "🚗", "🛻", "🚐", "🚚", "🚓", "🚔", "🚘", "🚖", "🚛", "🏎️", "🚒", "🚑", "🚎", "🚍", "🏍️", "🛵"]
-    static let themes: [Theme] = [
+    private static let animals = ["🐶", "🐭", "🐹", "🦊", "🐻", "🐼", "🐯", "🐷", "🐮", "🐱", "🐸", "🐵", "🙈", "🙊", "🙉", "🐔", "🦅", "🐺", "🦄", "🐞"]
+    private static let birds = ["🐓", "🦅", "🦜", "🕊️", "🦤", "🦢", "🦆", "🪿", "🦩", "🦚", "🦃", "🐧", "🐥", "🐣", "🐔", "🦇", "🐦‍⬛", "🐦"]
+    private static let cars = ["🚙", "🚗", "🛻", "🚐", "🚚", "🚓", "🚔", "🚘", "🚖", "🚛", "🏎️", "🚒", "🚑", "🚎", "🚍", "🏍️", "🛵"]
+    private static let themes = [
         Theme(name: "Animals", color: .pink, numberOfCards: 11, emojis: animals),
         Theme(name: "Birds", color: .mint, numberOfCards: 7, emojis: birds),
         Theme(name: "Cars", color: .cyan, numberOfCards: 10, emojis: cars)
@@ -32,7 +36,7 @@ class EmojiMemoryGame: ObservableObject {
         themes[Int.random(in: 0..<themes.count)]
     }
 
-    var cards: Array<MemoryGame<String>.Card> {
+    var cards: Array<Card> {
         model.cards
     }
 
@@ -50,7 +54,7 @@ class EmojiMemoryGame: ObservableObject {
 
     // MARK: - Intent(s)
 
-    func chooseCard(_ card: MemoryGame<String>.Card) {
+    func chooseCard(_ card: Card) {
         cards.filter({ !$0.isMatched}).count == 2 ? startNewGame() : model.chooseCard(card)
     }
 
